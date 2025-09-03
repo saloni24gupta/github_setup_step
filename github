@@ -1,0 +1,9 @@
+ git checkout -b story/frogs-and-ox
+ git reset --soft HEAD~1
+ git log --graph --decorate
+Checkout to directory git checkout feature/signout; git log --graph --decorate
+Run git merge story/frogs-and-ox
+
+Check git log now and it should show commit message as Merge branch 'story/frogs-and-ox'
+
+Git merged all the commits we made in the story/frogs-and-ox branch to the master branch. But since we made an additional commit on the master (fixing the typo from LIOON to LION) git created a new merge commit
