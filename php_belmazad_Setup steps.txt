@@ -1,0 +1,7 @@
+step 1 -> xampp download kro jis php ka version use krna ho
+step 2 -> xamp mei apache and mysql start krke dekho
+step 3 -> project clone kro
+step 4 -> vendor file upoad kro 
+/zend
+/api
+step 5- > /zend/public -> ke andr index.php, .htaccess dalna hai

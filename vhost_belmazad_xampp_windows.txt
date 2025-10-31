@@ -1,0 +1,29 @@
+<VirtualHost *:80>
+    ServerName belmazad.local
+    DocumentRoot "C:/xampp/htdocs/Belmazad/zend/public"
+    SetEnv APPLICATION_ENV "development"
+ 
+    <Directory "C:/xampp/htdocs/Belmazad/zend/public">
+        DirectoryIndex index.php
+        AllowOverride All
+        Require all granted
+</Directory>
+ 
+    ErrorLog "logs/belmazad_error.log"
+    CustomLog "logs/belmazad_access.log" combined
+</VirtualHost>
+ 
+<VirtualHost *:80>
+    ServerName a-belmazad.local
+    DocumentRoot "C:/xampp/htdocs/Belmazad/api/public"
+    SetEnv APPLICATION_ENV "development"
+ 
+    <Directory "C:/xampp/htdocs/Belmazad/api/public">
+        DirectoryIndex index.php
+        AllowOverride All
+        Require all granted
+</Directory>
+ 
+    ErrorLog "logs/belmazad-api_error.log"
+    CustomLog "logs/belmazad-api_access.log" combined
+</VirtualHost>
