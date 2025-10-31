@@ -1,0 +1,49 @@
+ubuntu@ip-172-31-33-51:/usr/local/src/php-5.6.40$ cat /etc/os-release
+NAME="Ubuntu"
+VERSION="16.04.7 LTS (Xenial Xerus)"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu 16.04.7 LTS"
+VERSION_ID="16.04"
+HOME_URL="http://www.ubuntu.com/"
+SUPPORT_URL="http://help.ubuntu.com/"
+BUG_REPORT_URL="http://bugs.launchpad.net/ubuntu/"
+VERSION_CODENAME=xenial
+UBUNTU_CODENAME=xenial
+ubuntu@ip-172-31-33-51:/usr/local/src/php-5.6.40$
+
+
+
+    1  cat /etc/os-release
+    2  sudo apt-get update
+    3  sudo apt-get upgrade -y
+    4  sudo apt-get install software-properties-common -y
+    5  sudo add-apt-repository ppa:ondrej/php
+    6  sudo apt-get install php5.6 php5.6-cli php5.6-fpm php5.6-mysql php5.6-curl php5.6-mbstring php5.6-xml -y
+    7  sudo apt-get update
+    8  sudo apt-get install software-properties-common -y
+    9  sudo add-apt-repository ppa:ondrej/php
+   10  sudo apt-get update
+   11  sudo apt-get install docker.io -y
+   12  sudo apt remove docker
+   13  sudo apt-get update
+   14  sudo apt-get install build-essential libxml2-dev libssl-dev libcurl4-openssl-dev libjpeg-dev libpng-dev libmysqlclient-dev libreadline-dev libzip-dev libonig-dev -y
+   15  cd /usr/local/src
+   16  sudo wget https://www.php.net/distributions/php-5.6.40.tar.gz
+   17  sudo tar -xvzf php-5.6.40.tar.gz
+   18  cd php-5.6.40
+   19  sudo ./configure --prefix=/usr/local/php56 --with-mysqli --with-pdo-mysql --with-openssl --with-curl --enable-mbstring --enable-fpm --with-zlib
+   20  sudo make -j$(nproc)
+   21  sudo make install
+   22  sudo apt-get update
+   23  sudo apt-get install     build-essential     libxml2-dev     libssl-dev     libcurl4-openssl-dev     libjpeg-dev     libpng-dev     libmysqlclient-dev     libreadline-dev     libzip-dev     libonig-dev     pkg-config -y
+   24  cd /usr/local/src/php-5.6.40
+   25  sudo ./configure --prefix=/usr/local/php56 --with-mysqli --with-pdo-mysql --with-openssl --with-curl --enable-mbstring --enable-fpm --with-zlib
+   26  sudo make -j$(nproc)
+   27  sudo make install
+   28  sudo cp php.ini-production /usr/local/php56/lib/php.ini
+   29  echo 'export PATH=/usr/local/php56/bin:$PATH' >> ~/.bashrc
+   30  source ~/.bashrc
+   31  php -v
+   32  cat /etc/os-release
+   33  history
