@@ -1,0 +1,21 @@
+   
+     sudo apt-get update
+     sudo apt-get install build-essential libxml2-dev libssl-dev libcurl4-openssl-dev libjpeg-dev libpng-dev libmysqlclient-dev libreadline-dev libzip-dev libonig-dev -y
+     cd /usr/local/src
+     sudo wget https://www.php.net/distributions/php-5.6.40.tar.gz
+     sudo tar -xvzf php-5.6.40.tar.gz
+     cd php-5.6.40
+    sudo ./configure --prefix=/usr/local/php56 --with-mysqli --with-pdo-mysql --with-openssl --with-curl --enable-mbstring --enable-fpm --with-zlib
+     sudo make -j$(nproc)
+     sudo make install
+     sudo apt-get update
+     sudo apt-get install     build-essential     libxml2-dev     libssl-dev     libcurl4-openssl-dev     libjpeg-dev     libpng-dev     libmysqlclient-dev     libreadline-dev     libzip-dev     libonig-dev     pkg-config -y
+     cd /usr/local/src/php-5.6.40
+     sudo ./configure --prefix=/usr/local/php56 --with-mysqli --with-pdo-mysql --with-openssl --with-curl --enable-mbstring --enable-fpm --with-zlib
+     sudo make -j$(nproc)
+     sudo make install
+     sudo cp php.ini-production /usr/local/php56/lib/php.ini
+     echo 'export PATH=/usr/local/php56/bin:$PATH' >> ~/.bashrc
+     source ~/.bashrc
+     php -v
+     cat /etc/os-release
