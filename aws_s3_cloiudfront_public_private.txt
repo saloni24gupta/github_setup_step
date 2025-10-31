@@ -1,0 +1,123 @@
+🗂️ AWS S3 + CloudFront Setup (Private Content with Signed URLs)
+🧩 Objective
+
+Host files in Amazon S3 privately and serve them securely through Amazon CloudFront, allowing access only through signed URLs.
+
+1️⃣ Create an S3 Bucket
+
+Bucket name: my-bucket65476
+
+Region: ap-south-1 (Mumbai)
+
+Folders uploaded:
+
+/templates/ (contains files like invoice.html)
+
+/img/ (contains image files)
+
+🔒 Make the bucket private
+
+Uncheck “Block all public access” (optional if default is on)
+Ensure no public access policy is enabled — access will be controlled via CloudFront.
+
+2️⃣ Create a CloudFront Distribution
+✅ Origin Settings
+Setting	Value
+Origin domain name	my-bucket65476.s3.ap-south-1.amazonaws.com
+Origin name	my-bucket65476.s3.ap-south-1.amazonaws.com-mhahdltqhwk
+Origin type	S3
+Origin access	Origin Access Control (OAC)
+OAC ID	E2WKKD0CLR3239
+Restrict Bucket Access	Yes (via OAC)
+3️⃣ Attach the OAC Policy to the S3 Bucket
+
+Go to S3 → Permissions → Bucket Policy, and paste:
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowCloudFrontServiceAccess",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "cloudfront.amazonaws.com"
+            },
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::my-bucket65476/*",
+            "Condition": {
+                "StringEquals": {
+                    "AWS:SourceArn": "arn:aws:cloudfront::729560449301:distribution/E2WKKD0CLR3239"
+                }
+            }
+        }
+    ]
+}
+
+
+✅ This allows only CloudFront (and not direct S3 public URLs) to fetch your files.
+
+4️⃣ CloudFront Behaviors
+
+Create two behaviors:
+
+Path Pattern	Cache Policy	Viewer Access	Purpose
+/public/*	CachingOptimized	Public (no signed URL)	Open files
+/private/* or /*	Use Signed URLs	Restricted	Secure content
+
+If you want all files private, apply the Signed URL restriction to /*.
+
+5️⃣ Create a Public Key and Key Group
+Steps:
+
+Go to CloudFront → Public keys
+
+Create a new public key
+
+Name: MyPublicKey
+
+Upload your public key (.pem) file
+
+Example ID: K26MN5A9H0GV9P
+
+Go to Key groups
+
+Create a Key Group
+
+Add the public key (K26MN5A9H0GV9P)
+
+Attach this key group to your CloudFront behavior that requires signed URLs.
+
+6️⃣ Generate the Signed URL
+
+Use AWS CLI:
+
+aws cloudfront sign \
+  --url "https://d1ztig8kfsz322.cloudfront.net/templates/invoice.html" \
+  --key-pair-id K26MN5A9H0GV9P \
+  --private-key file://C:/Users/Saloni/private_key.pem \
+  --date-less-than 2025-10-29T12:00:00Z
+
+Notes:
+
+file:// prefix is required.
+
+The .pem file should look like:
+
+-----BEGIN RSA PRIVATE KEY-----
+(your key here)
+-----END RSA PRIVATE KEY-----
+
+
+The output will be a signed URL:
+
+https://d1ztig8kfsz322.cloudfront.net/templates/invoice.html?Expires=1735492800&Signature=...&Key-Pair-Id=K26MN5A9H0GV9P
+
+
+Open this URL in a browser — it will allow access only until the expiration time.
+
+7️⃣ Test Access
+Type	Example URL	Expected Result
+❌ Direct S3	https://my-bucket65476.s3.ap-south-1.amazonaws.com/templates/invoice.html
+	AccessDenied
+✅ CloudFront Signed	https://d1ztig8kfsz322.cloudfront.net/templates/invoice.html
+?...	File loads successfully
