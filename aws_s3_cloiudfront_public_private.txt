@@ -120,4 +120,26 @@ Type	Example URL	Expected Result
 ❌ Direct S3	https://my-bucket65476.s3.ap-south-1.amazonaws.com/templates/invoice.html
 	AccessDenied
 ✅ CloudFront Signed	https://d1ztig8kfsz322.cloudfront.net/templates/invoice.html
+
 ?...	File loads successfully
+
+{
+    "Version": "2008-10-17",
+    "Id": "PolicyForCloudFrontPrivateContent",
+    "Statement": [
+        {
+            "Sid": "AllowCloudFrontServicePrincipal",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "cloudfront.amazonaws.com"
+            },
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::cloudfront-s3-config/*",
+            "Condition": {
+                "ArnLike": {
+                    "AWS:SourceArn": "arn:aws:cloudfront::729560449301:distribution/E2LOMU9JK8M53K"
+                }
+            }
+        }
+    ]
+}
